@@ -1,6 +1,6 @@
 const dbConn = require('../db/connect')
 
- const  Twit_post =(twit_post)=>{
+ const  Twit_post =function(twit_post){
      this.name =twit_post.name;
      this.date_posted =new Date();
      this.time_posted =new Date();
@@ -36,6 +36,20 @@ const dbConn = require('../db/connect')
   }
   })
   }
+// creating new twit post
+Twit_post.createPost =(postReqData, result)=>{
+    dbConn.query('INSERT INTO twit_post SET ?', postReqData,(err, res)=>{
+   if(err){
+       console.log('Error while inserting data');
+       result(null,err);
+   }else{
+       console.log('post inserted successfully');
+       result(null, res)
+   }
+
+    })
+}
+
 
  module.exports= Twit_post;
 

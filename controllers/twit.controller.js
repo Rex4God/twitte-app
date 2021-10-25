@@ -1,3 +1,4 @@
+const Twit_post = require('../seervice/Post-twit');
 const TwitpostModel =require('../seervice/Post-twit')
 
 
@@ -24,12 +25,17 @@ exports.getSingleTwitPost =(req, res)=>{
 }
 
 exports.createPost=(req, res)=>{
-    console.log('req data',req.body)
-
-    if(req.body.constructor ===Object && Object(req.body).length===0){
+    const postReqData = new TwitpostModel(req.body)
+//check null
+    if(req.body.constructor ===Object && Object.keys(req.body).length===0){
         res.status(400).send({success: false, message: 'Please all the fields'})
     }else{
-        console.log('valid data') 
+        TwitpostModel.createPost(postReqData,(err, twit_post)=>{
+            if(err)
+            res.send(err)
+            res.json({status: true, message:' success', data: twit_post})
+        
+        })
     }
 }
 
